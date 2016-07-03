@@ -9,7 +9,35 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 
-def power_spectrum(waveform, time_interval=0.001, algorithm = "naive"):
+
+def radius_of_gyration(points):
+    """
+    compute the mean euclidean distance from the centroid of a point cloud. 2d, 3d w/e
+    """
+    mean_point = points.mean(0)
+    distances = points - mean_point
+    return np.linalg.norm(distances, axis=1).mean()
+
+def plot_radius_of_gyration():
+    """
+    quick demo for radius of gyration
+    """
+
+    centroid = np.random.rand(2) * 5
+
+    points = np.random.rand(400, 2) + centroid
+    rog = radius_of_gyration(points)
+
+    # matplotlib is an absolute nightmare
+    fig = plt.gca()
+    plt.scatter(points[:, 0], points[:, 1])
+    circle = plt.Circle(centroid, rog, color='r', fill=False)
+    fig.gca().add_artist(circle)
+
+
+
+
+def power_spectrum(waveform, time_interval=0.001, algorithm="first"):
     """
     not-optimized power spectrum decomposition. the interesting part (to me) is translating 
     pickover's pseudocode into something python-like.
@@ -68,16 +96,16 @@ def plot_power_spectrum(iterations=1):
 
         start = time.clock()
         for _ in range(iterations):        
-            power = power_spectrum(data/10, algorithm=algorithm)[:100]
+            power = power_spectrum(data/10, algorithm=algorithm)
         
 
         finish = time.clock()
 
         print("{} iterations took {}s".format(iterations, finish - start))
-        print(power.shape)
-        print(power.max())
-        print(power.min())
-        print(power.mean())
+        # print(power.shape)
+        # print(power.max())
+        # print(power.min())
+        # print(power.mean())
         plt.figure()
         plt.plot(power)
         plt.show()
@@ -99,6 +127,7 @@ def compare():
 
 
 if __name__ == '__main__':
-    plot_power_spectrum()
-    compare()
+    # plot_power_spectrum()
+    # compare()
+    plot_radius_of_gyration()
 
