@@ -12,11 +12,12 @@ from matplotlib import pyplot as plt
 
 def radius_of_gyration(points):
     """
-    compute the mean euclidean distance from the centroid of a point cloud. 2d, 3d w/e
+    compute the radius of gyration of a point cloud
     """
     mean_point = points.mean(0)
-    distances = points - mean_point
-    return np.linalg.norm(distances, axis=1).mean()
+    displacement_vectors = points - mean_point
+    distances = np.sum(displacement_vectors**2)
+    return np.sqrt(distances / points.shape[0])
 
 def plot_radius_of_gyration():
     """
