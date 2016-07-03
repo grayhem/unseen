@@ -23,16 +23,27 @@ def plot_radius_of_gyration():
     quick demo for radius of gyration
     """
 
-    centroid = np.random.rand(2) * 5
+    corner = np.random.rand(2) * 3
 
-    points = np.random.rand(400, 2) + centroid
+    points = np.random.rand(400, 2) + corner
     rog = radius_of_gyration(points)
+    centroid = points.mean(0)
 
-    # matplotlib is an absolute nightmare
-    fig = plt.gca()
+    # make the figure with a function that is an acronym for something obvious
+    fig = plt.gcf()
+    # plot the points
     plt.scatter(points[:, 0], points[:, 1])
+    # make a circle
     circle = plt.Circle(centroid, rog, color='r', fill=False)
+    # do something that makes sense to someone who is not me in order to plot the circle
     fig.gca().add_artist(circle)
+    # set the limits
+    plt.xlim(0, 5)
+    plt.ylim(0, 5)
+    # sacrifice a black cat to ensure a good harvest
+    plt.axes().set_aspect('equal')
+    # matplotlib is an absolute nightmare
+    plt.show()
 
 
 
